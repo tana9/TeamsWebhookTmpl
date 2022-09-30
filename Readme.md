@@ -1,0 +1,3 @@
+# TeamsWebhookTmpl
+
+Microsoft TeamsのWebhookを使って定形メッセージを送信する
