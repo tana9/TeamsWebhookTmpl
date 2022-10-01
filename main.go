@@ -81,6 +81,7 @@ func inputPath() string {
 
 // 実行
 func run() error {
+	log.SetOutput(os.Stdout)
 	var err error
 	config, err := LoadConfig()
 	if err != nil {
@@ -105,6 +106,12 @@ func run() error {
 		return err
 	}
 
+	// 投稿確認
+	confirm := prompter.YN("こちらの内容で投稿しますか?", true)
+	if !confirm {
+		return nil
+	}
+
 	// TeamsのWebhookに送信
 	if err := postWebhook(config.WebHookUrl, jsonBody); err != nil {
 		return err
@@ -116,6 +123,8 @@ func run() error {
 // main
 func main() {
 	if err := run(); err != nil {
-		log.Fatal(err)
+		log.Printf("error: %+v", err)
+		prompter.YN("エラーを確認してください", true)
+		os.Exit(1)
 	}
 }
